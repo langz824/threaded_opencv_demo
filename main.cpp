@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "safe_queue.h"
+#include "scratch_detector.h"
 #include <chrono>
 #include <atomic>
 #include <string>
@@ -9,28 +10,18 @@
 #include <thread>
 
 
-void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter) {
+void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter, int thread_id) {
     std::string path;
     
     while (true) {
         if(!imageQueue.pop(path)) break;
         if(path == "EXIT") break;
-
-        cv::Mat img = cv::imread(path);
-        if (img.empty()) {
-            std::cerr << "Fail to read image: " << path << std::endl;
-            continue;
-        }
-
-        cv::Mat result;
-        cv::GaussianBlur(img, result, cv::Size(5,5), 1.5);
-
-        std::cout << "Thread " << std::this_thread::get_id() << std::endl
-                  << "Processed : " << path << std::endl;
-        counter++;
+        int localCount = ++counter;
+        process_image_for_scratch(path, thread_id, localCount);
     }
     
-    std::cout << "Thread " << std::this_thread::get_id() << "exiting. \n";
+    // std::cout << "Thread " << std::this_thread::get_id() << "exiting. \n";
+    // std::cout << "Worker #" << thread_id << "  processing: " << path << std::endl;
     
 }
 
@@ -52,11 +43,11 @@ int main() {
     }
 
     std::vector<std::thread> workers;
-    for (int i=0;i<numThreads;i++) {
-        workers.emplace_back(worker, std::ref(imageQueue), std::ref(totalProcess));
+    for (int i = 0; i < numThreads; ++i) {
+        workers.emplace_back(worker, std::ref(imageQueue), std::ref(totalProcess), i);
     }
-
-    for (int i=0;i < numThreads; i++) {
+    
+    for (int i=0;i < numThreads; ++i) {
         imageQueue.push("EXIT");
     }
 
@@ -76,3 +67,4 @@ int main() {
     std::cout << "==============================" << std::endl;
     return 0;
 }
+
