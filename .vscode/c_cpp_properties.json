@@ -1,0 +1,17 @@
+{
+    "configurations": [
+      {
+        "name": "Linux",
+        "includePath": [
+          "/usr/include/opencv4",   // 這是 OpenCV 的 header 路徑
+          "${workspaceFolder}/**"
+        ],
+        "defines": [],
+        "compilerPath": "/usr/bin/g++",
+        "cStandard": "gnu17",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "linux-gcc-x64"
+      }
+    ],
+    "version": 4
+  }
