@@ -7,6 +7,7 @@
 #include <iostream>
 #include <filesystem>
 #include <thread>
+#include <mutex>
 
 
 void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter, int thread_id) {
@@ -41,7 +42,7 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
     std::atomic<int> totalProcess = 0;
     SafeQueue<std::string> imageQueue;
-    const std::string folder = "image";
+    const std::string folder = "image2";
     const int numThreads = 4;
 
     // 遍歷folder 內所有檔案並把路徑內檔案放到imageQueue裡排隊
@@ -54,7 +55,7 @@ int main() {
 
     std::vector<std::thread> workers;
     for (int i=0;i<numThreads;i++) {
-        workers.emplace_back(worker, std::ref(imageQueue), std::ref(totalProcess));
+        workers.emplace_back(worker, std::ref(imageQueue), std::ref(totalProcess), i);
     }
 
     for (int i=0;i < numThreads; i++) {

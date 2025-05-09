@@ -7,7 +7,7 @@
 需先安裝 OpenCV（4.x）：
 
 ```bash
-g++ main.cpp -o gaussian_blur_fps `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+g++ main.cpp -o main `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
 ```
 
 ##  執行方式
@@ -15,7 +15,7 @@ g++ main.cpp -o gaussian_blur_fps `pkg-config --cflags --libs opencv4` -std=c++1
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
-./gaussian_blur_fps
+./main
 ```
 
 ##  輸出說明
@@ -24,3 +24,18 @@ g++ main.cpp -o gaussian_blur_fps `pkg-config --cflags --libs opencv4` -std=c++1
 - 統計處理總張數、總耗時與平均 FPS
 
 ---
+
+2025/05/09 僅讀入高斯模糊後就刪掉
+手機圖
+==============================
+總共處理  400張圖片
+總共耗時  4.64961秒
+平均Fps: 86.0287
+==============================
+
+刮傷類瑕疵
+==============================
+總共處理  240張圖片
+總共耗時  0.0680839秒
+平均Fps: 3525.06
+==============================
