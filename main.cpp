@@ -9,7 +9,7 @@
 #include <thread>
 
 
-void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter) {
+void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter, int thread_id) {
     std::string path;
     
     while (true) {
@@ -25,12 +25,13 @@ void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter) {
         cv::Mat result;
         cv::GaussianBlur(img, result, cv::Size(5,5), 1.5);
 
-        std::cout << "Thread " << std::this_thread::get_id() << std::endl
-                  << "Processed : " << path << std::endl;
-        counter++;
+
+        int image_id = ++counter;
+        std::cout << "[Thread " << thread_id << "] #" << image_id << ": " << path << std::endl;
+        
     }
     
-    std::cout << "Thread " << std::this_thread::get_id() << "exiting. \n";
+    std::cout << "[Thread " << thread_id << "] exiting.\n";
     
 }
 
