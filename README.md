@@ -8,7 +8,8 @@
 需先安裝 OpenCV（4.x）：
 
 ```bash
-g++ main.cpp -o scratch_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+g++ main.cpp scratch_detector.cpp -o scratch_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+
 ```
 
 ##  執行方式
