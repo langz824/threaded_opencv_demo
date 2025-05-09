@@ -20,7 +20,7 @@ public:
     bool pop(T& result) {
         std::unique_lock<std::mutex> lock(m);
         cv.wait(lock, [&] {return !q.empty();});
-        result = q.front;
+        result = q.front();
         q.pop();
         return true;
     }
