@@ -1,4 +1,4 @@
-# Gaussian Blur FPS Benchmark (Multithreaded)
+# FPS Benchmark (Multithreaded)
 
 本專案使用 C++ 搭配 OpenCV 與多執行緒對 `image/` 資料夾中的圖片進行高斯模糊處理，並計算效能指標（FPS）。
 
