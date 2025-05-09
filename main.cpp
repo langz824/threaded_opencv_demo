@@ -31,7 +31,7 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
     std::atomic<int> totalProcess = 0;
     SafeQueue<std::string> imageQueue;
-    const std::string folder = "image";
+    const std::string folder = "image2";
     const int numThreads = 4;
 
     // 遍歷folder 內所有檔案並把路徑內檔案放到imageQueue裡排隊
