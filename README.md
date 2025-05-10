@@ -1,6 +1,6 @@
 # rolled-in scale的檢測
 
-本專案使用 C++ 搭配 OpenCV 與多執行緒對 `image/` 資料夾中的圖片進行針對這類圖形的斑塊框選，
+本專案使用 C++ 搭配 OpenCV 與多執行緒對 `image/` 資料夾中的圖片進行針對這類圖形的斑塊框選
 ，最後將bounding box畫在原圖上，並計算效能指標（FPS）。
 
 ##  編譯方式
@@ -13,7 +13,7 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 ```
 
 ##  執行方式
-
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/input.png)
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
@@ -32,6 +32,8 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 
 - 將有效缺陷以紅色矩形框標示於原圖上
 ##  輸出說明
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/output.png)
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/output2.png)
 - image_output/ 為在原圖上畫框標示出檢測結果
 - debug_output/ 顯示圖片在畫bounding box 之前利用threshold劃分出的目標區域
 - 每張圖會顯示處理它的執行緒 ID
