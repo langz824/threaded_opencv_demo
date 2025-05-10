@@ -8,7 +8,7 @@
 需先安裝 OpenCV（4.x）：
 
 ```bash
-g++ main.cpp scratch_detector.cpp -o scratch_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
 
 ```
 
@@ -17,7 +17,7 @@ g++ main.cpp scratch_detector.cpp -o scratch_detect `pkg-config --cflags --libs 
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
-./scratch_detect
+./scale_detect
 ```
 
 ##  輸出說明
