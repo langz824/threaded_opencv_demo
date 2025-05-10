@@ -21,7 +21,7 @@ g++ main.cpp scratch_detector.cpp -o scratch_detect `pkg-config --cflags --libs 
 ```
 
 ##  輸出說明
-
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scratch_detect_bench/output.png)
 - 每張圖會顯示處理它的執行緒 ID
 - 統計處理總張數、總耗時與平均 FPS
 
