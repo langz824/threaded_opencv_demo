@@ -38,3 +38,4 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 - 每張圖會顯示處理它的執行緒 ID
 - 統計處理總張數、總耗時與平均 FPS
 
+[圖片展示](<https://drive.google.com/drive/folders/1JLs98PNOchkLnGknqp4t-tphvkQ02PBz?hl=zh-TW>)
