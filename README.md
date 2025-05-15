@@ -47,3 +47,5 @@ g++ main.cpp patches_detector.cpp -o patches_detect `pkg-config --cflags --libs 
 - 雖存在以上問題，但該方法框選區域還是都有包含瑕疵，只是bounding box 會多框到比較多不屬於瑕疵範圍的問題存在
 
 ![image](https://github.com/langz824/threaded_opencv_demo/blob/patches_detector/patches_mask.png)
+
+[輸出影像](<https://drive.google.com/drive/folders/1f1MmPorlefPK_Ha_rEafp9TYftkf9Mp9?hl=zh-TW>)
