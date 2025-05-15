@@ -1,4 +1,4 @@
-# rolled-in scale的檢測
+# patches的檢測
 
 本專案使用 C++ 搭配 OpenCV 與多執行緒對 `image/` 資料夾中的圖片進行針對這類圖形的斑塊框選
 ，最後將bounding box畫在原圖上，並計算效能指標（FPS）。
@@ -8,7 +8,7 @@
 需先安裝 OpenCV（4.x）：
 
 ```bash
-g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+c
 
 ```
 
@@ -17,7 +17,7 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
-./scale_detect
+./patches_detect
 ```
 ##  方法介紹
 - 透過**CLAHE 對比增強**提升局部亮度細節，改善光照不均問題

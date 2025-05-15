@@ -8,6 +8,7 @@
 std::mutex print_mutex;
 namespace fs = std::filesystem;
 
+
 bool is_valid_defect(const std::vector<cv::Point>& contour) {
     cv::Rect rect = cv::boundingRect(contour);
     float aspect_ratio = static_cast<float>(rect.width) / rect.height; // 過寬或過扁排除
@@ -29,7 +30,8 @@ bool is_valid_defect(const std::vector<cv::Point>& contour) {
 
 }
 
-void process_image_for_scale(const std::string& path, int thread_id, int count) {
+
+void process_image_for_patches(const std::string& path, int thread_id, int count) {
     
     fs::path input_path(path);
     fs::path output_dir = input_path.parent_path().parent_path() /
@@ -56,47 +58,20 @@ void process_image_for_scale(const std::string& path, int thread_id, int count) 
     clahe->setClipLimit(4.0);
     clahe->apply(gray, enhanced);
 
-    cv::GaussianBlur(enhanced, blurred, cv::Size(9, 9), 2.5); 
-    // cv::threshold(blurred, binary, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU); 由otsu去根據灰階分布決定thresh反而會導致被打光的部分被強調
-    // cv::threshold(blurred, binary, 80, 255, cv::THRESH_BINARY_INV); 固定threshold注定失敗
-    /* 更慘
-    cv::adaptiveThreshold(blurred, binary, 255,
-                        cv::ADAPTIVE_THRESH_MEAN_C,  // 或 GAUSSIAN_C
-                        cv::THRESH_BINARY_INV,
-                        25,   // blockSize，區域大小（奇數，越大越平滑）
-                        5);   // C，局部平均後減掉的值（越大越嚴格）
-    */
+    cv::GaussianBlur(gray, blurred, cv::Size(9, 9), 2.5); 
 
-    /*
-    double otsu_thresh = cv::threshold(blurred, binary, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
-    cv::threshold(blurred, binary, otsu_thresh +10, 255, cv::THRESH_BINARY_INV);  // +10 → 調高門檻
-    */
+    // double otsu_thresh = cv::threshold(blurred, binary, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
+    // cv::threshold(blurred, binary, otsu_thresh +10, 255, cv::THRESH_BINARY_INV);  // +10 → 調高門檻
+    cv::threshold(blurred, binary, 30, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
 
-    // 3. Laplacian（做二階導數）
-    cv::Mat lap;
-    cv::Laplacian(blurred, lap, CV_16S, 3);
-    cv::convertScaleAbs(lap, lap);
 
-    // 4. Threshold（二值化找強變化區）
-    // double otsu_thresh = cv::threshold(lap, binary, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
-    // double final_thresh = std::max(otsu_thresh - 20, 80.0);  // 設定最小下限
-    cv::threshold(lap, binary, 30, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
     cv::Mat morph;
-    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-
-
-    //cv::morphologyEx(binary, morph, cv::MORPH_CLOSE, kernel);
-    // 由Close 改為 Open+Close Morphology 連結仍導致「小斑點被合併進雜區」
-    cv::Mat open_kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(4, 4));
-    cv::Mat close_kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-    cv::morphologyEx(binary, morph, cv::MORPH_OPEN, open_kernel);
-    cv::morphologyEx(morph, morph, cv::MORPH_CLOSE, close_kernel);
-
-
+    cv::Mat close_kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
+    cv::morphologyEx(binary, morph, cv::MORPH_CLOSE, close_kernel);
     // 找輪廓並框起來
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(morph, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-    
+    // cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
     
     for (const auto& contour : contours) {
         if (is_valid_defect(contour)) {

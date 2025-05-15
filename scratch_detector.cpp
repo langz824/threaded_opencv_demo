@@ -30,7 +30,7 @@ void process_image_for_scratch(const std::string& path, int thread_id, int count
 
     double otsu_thresh = cv::threshold(gray, binary, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
     cv::Canny(gray, edges, otsu_thresh * 0.5, otsu_thresh);  // 更動態的邊緣偵測
-
+    
     cv::Mat morph;
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
     cv::morphologyEx(edges, morph, cv::MORPH_CLOSE, kernel);
