@@ -13,7 +13,7 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 ```
 
 ##  執行方式
-![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/input.png)
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/scale.png)
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
@@ -24,23 +24,17 @@ g++ main.cpp scale_detector.cpp -o scale_detect `pkg-config --cflags --libs open
 
 - 使用**高斯模糊**去除雜訊，強化目標邊緣穩定性
 
-- 採用**Otsu 自動閾值法**並搭配調整後閾值進行二值化，分離前景與背景
+- 採用**Otsu 自動閾值法**決定初步門檻值，並手動下調20以避免過亮區域判斷為瑕疵
 
-- 結合**形態學Opening與Closing**去除雜點並填補斷裂區域
+- 結合**形態學Opening（2×2）與Closing（3×3）** 去除雜點並填補斷裂區域
 
-- 利用輪廓偵測與篩選條件（面積、長寬比、緊密度）濾除非瑕疵區域
+- 利用輪廓偵測與篩選條件（面積、長寬比、緊密度）濾除非瑕疵區域，面積 > 50 且 < 1000 排除過小雜點與過大背景，長寬比 < 3（排除狹長形），緊密度（compactness）< 6（排除邊緣過度抖動或破碎）
 
 - 將有效缺陷以紅色矩形框標示於原圖上
 ##  輸出說明
-![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/output.png)
-![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/output2.png)
+![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/scale_output.png)
 - image_output/ 為在原圖上畫框標示出檢測結果
 - debug_output/ 顯示圖片在畫bounding box 之前利用threshold劃分出的目標區域
 - 每張圖會顯示處理它的執行緒 ID
 - 統計處理總張數、總耗時與平均 FPS
 
----
-## rolled-in scale 
-總共處理  240張圖片
-總共耗時  0.160464秒
-平均Fps: 1495.67
