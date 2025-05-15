@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "safe_queue.h"
-#include "patches_detector.h"
+#include "inclusion_detector.h"
 #include <chrono>
 #include <atomic>
 #include <string>
@@ -17,7 +17,7 @@ void worker(SafeQueue<std::string>& imageQueue, std::atomic<int>& counter, int t
         if(!imageQueue.pop(path)) break;
         if(path == "EXIT") break;
         int localCount = ++counter;
-        process_image_for_patches(path, thread_id, localCount); // 這邊換成處理scale的
+        process_image_for_inclusion(path, thread_id, localCount); // 這邊換成處理scale的
     }
     
     // std::cout << "Thread " << std::this_thread::get_id() << "exiting. \n";
@@ -31,7 +31,7 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
     std::atomic<int> totalProcess = 0;
     SafeQueue<std::string> imageQueue;
-    const std::string folder = "patches";
+    const std::string folder = "inclusion";
     const int numThreads = 4;
 
     // 遍歷folder 內所有檔案並把路徑內檔案放到imageQueue裡排隊

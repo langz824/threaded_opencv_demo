@@ -8,7 +8,8 @@
 需先安裝 OpenCV（4.x）：
 
 ```bash
-c
+g++ main.cpp inclusion_detector.cpp -o inclusion_detect `pkg-config --cflags --libs opencv4` -std=c++17 -pthread
+
 
 ```
 
@@ -17,7 +18,7 @@ c
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
-./patches_detect
+./inclusion_detect
 ```
 ##  方法介紹
 - 透過**CLAHE 對比增強**提升局部亮度細節，改善光照不均問題
