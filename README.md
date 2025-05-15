@@ -14,7 +14,7 @@ g++ main.cpp inclusion_detector.cpp -o inclusion_detect `pkg-config --cflags --l
 ```
 
 ##  執行方式
-![image](https://github.com/langz824/threaded_opencv_demo/blob/scale_detector/input.png)
+![image](https://github.com/langz824/threaded_opencv_demo/blob/inclusion_detector/inclusion.png)
 將圖片放入 `image/` 資料夾後執行：
 
 ```bash
